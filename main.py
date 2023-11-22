@@ -23,9 +23,9 @@ print('train dir:', train_dir)
 
 #Data Augmentation 
 train_datagen = ImageDataGenerator(
-    rescale=1./255,        # Rescale pixel values to be in the range [0, 1]
-    shear_range=0.2,       # Shear angle in the counter-clockwise direction in degrees
-    zoom_range=0.2,        # Random zoom in the range [1-zoom_range, 1+zoom_range]
+    rescale=1./255,        
+    shear_range=0.2,       
+    zoom_range=0.2,        
     # horizontal_flip=True   # Randomly flip images horizontally
 )
 
@@ -36,7 +36,7 @@ train_generator = train_datagen.flow_from_directory(
     train_dir,
     target_size=input_shape[:2],
     batch_size=batch_size,
-    class_mode='categorical'  # Assuming you have multiple classes
+    class_mode='categorical'  
 )
 
 val_generator = val_datagen.flow_from_directory(
@@ -54,8 +54,10 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
-# model.add(Dense(128, activation='relu'))
+model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
+# model.add(Dense(128, activation='relu'))
+# model.add(Dropout(0.5))
 model.add(Dense(4, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 model.summary()
