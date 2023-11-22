@@ -18,15 +18,13 @@ cwd = os.getcwd()
 parent_directory = os.path.join(cwd, os.pardir) 
 train_dir = os.path.abspath(os.path.join(parent_directory, 'AER850P2/Project 2 Data/Data/Train'))
 val_dir = os.path.abspath(os.path.join(parent_directory, 'AER850P2/Project 2 Data/Data/Validation'))
-test_dir= os.path.abspath(os.path.join(parent_directory, 'AER850P2/Project 2 Data/Data/Test'))
-print('train dir:', train_dir)
+
 
 #Data Augmentation 
 train_datagen = ImageDataGenerator(
     rescale=1./255,        
     shear_range=0.2,       
     zoom_range=0.2,        
-    # horizontal_flip=True   # Randomly flip images horizontally
 )
 
 val_datagen = ImageDataGenerator(rescale=1./255)
@@ -56,13 +54,11 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
-# model.add(Dense(128, activation='relu'))
-# model.add(Dropout(0.5))
 model.add(Dense(4, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 model.summary()
 
-epochs = 20
+epochs = 10
 history = model.fit(
     train_generator,
     steps_per_epoch=train_generator.samples // batch_size,  # Number of batches per epoch
@@ -92,3 +88,6 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
+
+
+model.save("C:/Users/nikita.andrade/Documents/GitHub/AER850P2/Model")
