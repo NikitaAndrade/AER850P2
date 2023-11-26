@@ -90,4 +90,4 @@ plt.tight_layout()
 plt.show()
 
 
-model.save("C:/Users/nikita.andrade/Documents/GitHub/AER850P2/Model")
+model.save("model.h5")

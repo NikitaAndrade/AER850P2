@@ -1,0 +1,64 @@
+from keras.models import load_model
+from tensorflow.keras import datasets, layers, models
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import load_img, img_to_array, array_to_img
+import os
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import numpy as np
+import scipy
+
+#Defining File Paths
+cwd = os.getcwd()
+parent_directory = os.path.join(cwd, os.pardir) 
+test_dir = os.path.abspath(os.path.join(parent_directory, 'AER850P2/Project 2 Data/Data/Test'))
+model = load_model('model_bad.h5')
+
+input_shape = (100, 100)
+#path to images
+class_labels = {0:'Large Crack', 1: 'Medium Crack', 2: 'None', 3: 'Small Crack'}
+
+large_crack_img_path = 'C:/Users/Owner/Documents/Python/AER850P2/Project 2 Data/Data/Test/Large/Crack__20180419_13_29_14,846.bmp'
+
+img_resize = load_img(large_crack_img_path,target_size = input_shape)
+img_array = img_to_array(img_resize)
+img_array = np.expand_dims(img_array, axis=0)
+img_array /= 255.0
+predictions = model.predict(img_array)
+print(predictions)
+predicted_class_index = np.argmax(predictions)
+predicted_prob_index = np.max([predictions])
+predicted_label = class_labels[predicted_class_index]
+plt.imshow(img_resize)
+plt.axis('off')
+plt.title(f'Actual Class: Large crack\n Predicted Class: {predicted_class_index}\nProbability: {predicted_prob_index:.4f}')
+
+for i, p in enumerate(predictions[0]):
+    print(i)
+    class_label = class_labels[i]
+    print(class_labels[i])
+    plt.text(0.95, 0.05*i, f"{class_label}: {np.max(p):.3f}", fontsize=12, color='green', ha='right', va='bottom', transform=plt.gca().transAxes)
+plt.show()
+
+medium_crack_img_path = 'C:/Users/Owner/Documents/Python/AER850P2/Project 2 Data/Data/Test/Medium/Crack__20180419_06_16_35,563.bmp'
+img_resize = load_img(medium_crack_img_path,target_size = input_shape)
+img_array = img_to_array(img_resize)
+img_array = np.expand_dims(img_array, axis=0)
+img_array /= 255.0
+predictions = model.predict(img_array)
+print(predictions)
+predicted_class_index = np.argmax(predictions)
+predicted_prob_index = np.max([predictions])
+predicted_label = class_labels[predicted_class_index]
+plt.imshow(img_resize)
+plt.axis('off')
+plt.title(f'Actual Class: Medium crack\n Predicted Class: {predicted_class_index}\nProbability: {predicted_prob_index:.4f}')
+
+for i, p in enumerate(predictions[0]):
+    print(i)
+    class_label = class_labels[i]
+    print(class_labels[i])
+    plt.text(0.95, 0.05*i, f"{class_label}: {np.max(p):.3f}", fontsize=12, color='green', ha='right', va='bottom', transform=plt.gca().transAxes)
+plt.show()
